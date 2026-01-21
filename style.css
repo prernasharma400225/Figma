@@ -1,0 +1,231 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,body{
+    height: 100%;
+    width: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+body{
+    background-color: rgb(18, 18, 18);
+}
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    
+}
+.left{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: rgb(224, 224, 224);
+    background-color: rgb(33, 33, 33);
+    border-right: 1px solid rgb(224, 224, 224);
+}
+
+.left .left-top{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+.left-sec{
+    padding: 0.75rem;
+    line-height: 1.25rem;
+    border-bottom: 1px solid rgb(69, 69, 69);
+}
+.left-sec h1{
+    font-size: 1rem;
+}
+.left-sec p{
+    font-size: 0.75rem;
+    color: rgb(167, 167, 167);
+}
+.left-sec p span{
+    padding: 0.1rem 0.2rem;
+    margin-left: 3px;
+    border-radius: 0.2rem;
+    color: rgb(36, 141, 252);
+    background-color: rgba(90, 166, 247, 0.205);
+}
+.left-third{
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(69, 69, 69);
+}
+.l-third{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+}
+.l-third h2{
+    font-size: 0.85rem;
+    font-weight: 500;
+    background-color: rgb(63, 63, 63);
+    padding: 0.1rem 0.25rem;
+    border-radius: 0.25rem;
+}
+.l-third h3{
+    color: gray;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+.left-pages{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid rgb(69, 69, 69);
+}
+.left-pages h1{
+    font-size: 1rem;
+    font-weight: 600;
+}
+.left-layers{
+    padding: 0.5rem;
+}
+.left-layers h1{
+    font-size: 1rem;
+}
+.left-frame{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+.left-frame p{
+    font-size: 0.85rem;
+}
+
+
+
+.middle{
+    width: 50%;
+}
+.right{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: rgb(224, 224, 224);
+    background-color: rgb(33, 33, 33);
+    border-left: 1px solid rgb(224, 224, 224);
+}
+.right-top{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid rgb(69, 69, 69);
+}
+.right-topUp{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.right-profile{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.profile-pic{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.profile-pic img{
+    height: 100%;
+    width: 100%;
+
+}
+.right-UpBtn{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.right-UpBtn button{
+    padding: 0.45rem 0.65rem;
+    background-color: rgb(56, 147, 244);
+    color: white;
+    border-radius: 0.25rem;
+    border: none;
+    font-size: 0.75rem;
+}
+.right-topSec{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.topSec-up{
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}
+.topSec-up h2{
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+    background-color: rgb(60, 60, 60);
+}
+.topSec-up h3{
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.topSec-down{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.topSec-down h1{
+    font-size: 0.85rem;
+    font-size: 500;
+}
+.right-sec{
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+.right-sec h2{
+    font-size: 1rem;
+    font-weight: 500;
+}
+.right-color{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+.right-color .color{
+    display: flex;
+    align-items: center;
+    border-radius: 0.2rem;
+    background-color: rgb(59, 59, 59);
+}
+.right-box{
+    height: 1rem;
+    width: 1rem;
+    background-color: black;
+}
+.color .box{
+    padding: 0.2rem 3.5rem 0.2rem 0.2rem;
+    border-right: 1px solid rgb(19, 19, 19);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.color p{
+    padding: 0.2rem ;
+}
