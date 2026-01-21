@@ -4,114 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>DOM Design Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.8.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- leftdiv -->
-        <div class="left">
-            <div class="left-top">
-                <i class="ri-figma-line"></i>
-                <i class="ri-crop-line"></i>
-            </div>
-            <div class="left-sec">
-                <h1>Untitled</h1>
-                <p>Team project <span>Free</span></p>
-            </div>
-            <div class="left-third">
-                <div class="l-third">
-                    <h2>File</h2>
-                    <h3>Assets</h3>
-                </div>
-                <div class="l-i">
-                    <i class="ri-search-line"></i>
-                </div>
-            </div>
 
-            <div class="left-pages">
-                <h1>Pages</h1>
-                <i class="ri-add-line"></i>
-            </div>
-
-            <div class="left-layers">
-                <h1>Layers</h1>
-                <div class="left-frame">
-                    <i class="ri-aspect-ratio-line"></i>
-                    <p>Frame 1</p>
-                </div>
+    <div class="landing-page" id="landingPage">
+        <div class="landing-content">
+            <div class="start-btn" id="start">
+                <img src="figma.gif" alt="">
             </div>
         </div>
-
-        <!-- middlediv -->
-        <div class="middle">
-
-        </div>
-
-        <!-- rightdiv -->
-        <div class="right">
-
-            <!-- top-Part -->
-            <div class="right-top">
-                <!-- profile -->
-                <div class="right-topUp">
-                    <div class="right-profile">
-                        <div class="profile-pic">
-                            <img src="profile.png" alt="">
-                        </div>
-                        <i class="ri-arrow-down-s-line"></i>
-                    </div>
-                    <div class="right-UpBtn">
-                        <div class="Btn">
-                            <i class="ri-play-large-line"></i>
-                            <i class="ri-arrow-down-s-line"></i>
-                        </div>
-                        <button>Share</button>
-                    </div>
-                </div>
-
-                <!-- buttons -->
-                <div class="right-topSec">
-                    <div class="topSec-up">
-                        <h2>Design</h2>
-                        <h3>Prototype</h3>
-                    </div>
-                    <div class="topSec-down">
-                        <h1>100%</h1>
-                        <i class="ri-arrow-down-s-line"></i>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="right-sec">
-                <h2>Page</h2>
-                <div class="right-color">
-                    <div class="color">
-                        <div class="box">
-                            <div class="right-box"></div>
-                            <p>1E1E1E</p>
-                        </div>
-                        <p>100 %</p>
-                    </div>
-                    <i class="ri-eye-line"></i>
-                </div>
-            </div>
-
-            <div class="properties">
-                <div>
-                    <p>width:</p>
-                </div>
-            </div>
-
-            <!-- top-end -->
-        </div>
-        <!-- right-end -->
     </div>
 
-    <script type="module" src="script.js"></script>
+    <div class="tool-page" id="toolPage">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <img src="figmalogo.png" alt="">
+                </div>
+                <h1>Figma</h1>
+
+            </div>
+            <div>
+                <div></div>
+                <button class="home-btn" id="homeBtn">
+
+                    Login <i class="ri-arrow-down-s-line"></i>
+                </button>
+            </div>
+
+
+        </div>
+
+        <div class="main-area">
+            <div class="sidebar">
+                <div class="left">
+
+                    <div class="left-sec">
+                        <h1>Untitled</h1>
+                        <p>Team project <span>Free</span></p>
+                    </div>
+                    <div class="left-third">
+                        <div class="l-third">
+                            <h2>File</h2>
+                            <h3>Assets</h3>
+                        </div>
+                        <div class="l-i">
+                            <i class="ri-search-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="left-pages">
+                        <h1>Pages</h1>
+                        <i class="ri-add-line"></i>
+                    </div>
+
+
+                </div>
+                <div class="leftBtn">
+                    <button class="tool-btn active" id="selectBtn">
+                        <div class="tool-icon"><i class="fas fa-mouse-pointer"></i></div>
+                        Select
+                    </button>
+                    <button class="tool-btn" id="textBtn">
+                        <div class="tool-icon"><i class="fas fa-font"></i></div>
+                        Text
+                    </button>
+                    <button class="tool-btn" id="boxBtn">
+                        <div class="tool-icon"><i class="fas fa-square"></i></div>
+                        Box
+                    </button>
+                    <button class="tool-btn" id="circleBtn">
+                        <div class="tool-icon"><i class="fas fa-circle"></i></div>
+                        Circle
+                    </button>
+                </div>
+                <div class="item">
+                    <h3>Layers</h3>
+                <div class="counter" id="counter">0 items</div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas" id="canvas">
+                    <div class="hint" id="hint">
+                        <i class="fas fa-plus-circle"></i>
+                        <div>Select a tool to add elements</div>
+                        <div style="font-size:13px; margin-top:8px; color:#888;">Click on canvas to place</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Properties</h3>
+
+                <div class="property-group">
+                    <div class="property-label">Position</div>
+                    <div class="row-inputs">
+                        <input type="number" class="property-input" id="xInput" placeholder="X" disabled>
+                        <input type="number" class="property-input" id="yInput" placeholder="Y" disabled>
+                    </div>
+                </div>
+
+                <div class="property-group">
+                    <div class="property-label">Size</div>
+                    <div class="row-inputs">
+                        <input type="number" class="property-input" id="wInput" placeholder="Width" disabled>
+                        <input type="number" class="property-input" id="hInput" placeholder="Height" disabled>
+                    </div>
+                </div>
+
+                <div class="property-group">
+                    <div class="property-label">Background Color</div>
+                    <input type="color" class="property-input" id="bgInput" value="#4fc3f7" disabled>
+                </div>
+
+                <div class="property-group">
+                    <div class="property-label">Text Color</div>
+                    <input type="color" class="property-input" id="textInput" value="#000000" disabled>
+                </div>
+
+                <div class="property-group">
+                    <div class="property-label">Font Size</div>
+                    <input type="number" class="property-input" id="fontInput" value="16" disabled>
+                </div>
+
+                <div class="mobile-controls">
+                    <button class="mobile-btn" id="mobileFrontBtn">Front</button>
+                    <button class="mobile-btn" id="mobileBackBtn">Back</button>
+                    <button class="mobile-btn red" id="mobileDeleteBtn">Delete</button>
+                    <button class="mobile-btn yellow" id="mobileClearBtn">Clear</button>
+                </div>
+
+                <button class="action-btn layer-btn" id="frontBtn" disabled>Bring to Front</button>
+                <button class="action-btn layer-btn" id="backBtn" disabled>Send to Back</button>
+                <button class="action-btn delete-btn" id="deleteBtn" disabled>Delete Selected</button>
+                <button class="action-btn clear-btn" id="clearBtn">Clear Canvas</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h3>User Login</h3>
+
+            <label id="login-label">Profile Image</label>
+            <input type="file" name="" id="userImg">
+
+            <label class="login-label">Name</label>
+            <input type="text" id="userName" placeholder="Enter name">
+
+            <label class="login-label">Profession</label>
+            <input type="text" id="userJob" placeholder="Enter profession">
+
+            <button class="login-save" id="loginSave">Save</button>
+            <button class="login-close" id="loginClose">Cancel</button>
+
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+
 </body>
 
 </html>
