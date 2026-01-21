@@ -55,7 +55,7 @@ window.onload = () => {
             landingPage.style.display = 'none';
             toolPage.classList.add("show");
         }, 600);
-    }, 1000);
+    }, 7000);
 }
 
 
