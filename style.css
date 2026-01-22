@@ -86,13 +86,14 @@
 
   .header {
       height: 55px;
-      background-color: var(--lgray);
+      background-color: rgba(25, 25, 25, 0.848);
       color: var(--white);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      backdrop-filter: blur(5px);
       padding: 5px 15px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.132);
+      box-shadow: 0 4px 10px var(--dgray)
   }
 
   .header-left {
@@ -103,7 +104,7 @@
 
   .header-left h1 {
       font-size: 1rem;
-      color: var(--dgray);
+      color:rgb(217, 216, 216);
   }
 
   .logo {
@@ -132,14 +133,14 @@
 
   .icons a{
     text-decoration: none;
-    color: var(--dgray);
+    color: rgb(217, 216, 216);
    
   }
   .icons a i{
     font-size: 20px;
   }
   .icons i{
-    color: var(--white);
+    color: rgb(217, 216, 216);
     font-size: 20px;
   }
 
@@ -349,6 +350,33 @@
   .item .counter{
     color: var(--dgray);
   }
+  .layers-panel {
+    padding: 6px 10px;
+    border-top: 1px solid rgb(69, 69, 69);
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 13px;
+    color: var(--black);
+}
+
+.layer-item {
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.layer-item:hover {
+    background: rgba(90, 90, 90, 0.1);
+}
+
+.layer-item.selected {
+    background: rgba(36, 141, 252, 0.2);
+    border: 1px solid #2490ff;
+}
+
 
   .tool-btn {
       width: 50px;
@@ -454,7 +482,7 @@
       border-radius: 5px;
       font-size: 13px;
       background-color: var(--white);
-      color: var(--dgray);
+      color: var(--black);
   }
 
   .property-input:disabled {
@@ -600,6 +628,25 @@
       right: -7px;
       cursor: se-resize;
   }
+
+  .rotate-handle {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: #2196f3;
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: grab;
+    display: none;
+    z-index: 1200;
+}
+
+.selected .rotate-handle {
+    display: block;
+}
 
   .mobile-controls {
       display: none;

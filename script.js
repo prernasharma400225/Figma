@@ -14,6 +14,14 @@ let itemH = 0
 let zIndex = 1
 let isTouch = false
 
+let rotating = false
+let rotationCenterX = 0
+let rotationCenterY = 0
+let initialRotate = 0
+let initialMouseX = 0
+let initialMouseY = 0
+
+
 const landingPage = document.getElementById("landingPage")
 const toolPage = document.getElementById("toolPage")
 const homeBtn = document.getElementById("homeBtn")
@@ -27,6 +35,7 @@ const selectBtn = document.getElementById("selectBtn")
 const textBtn = document.getElementById("textBtn")
 const boxBtn = document.getElementById("boxBtn")
 const circleBtn = document.getElementById("circleBtn")
+const rotateInput = document.getElementById("rotateInput")
 
 const xInput = document.getElementById("xInput")
 const yInput = document.getElementById("yInput")
@@ -258,6 +267,8 @@ function adjustTextHeight(element) {
 
 function makeTextElement(x, y) {
     const el = document.createElement("div")
+    el.dataset.type = "text"
+    el.dataset.rotate = 0
     el.className = "element text-element"
     el.style.left = x + "px"
     el.style.top = y + "px"
@@ -291,6 +302,7 @@ function makeTextElement(x, y) {
 
 function makeBoxElement(x, y) {
     const el = document.createElement("div")
+    el.dataset.type = "box"
     el.className = "element box-element"
     el.style.width = "130px"
     el.style.height = "90px"
@@ -312,6 +324,7 @@ function makeBoxElement(x, y) {
 
 function makeCircleElement(x, y) {
     const el = document.createElement("div")
+    el.dataset.type = "circle"
     el.className = "element circle-element"
     el.style.width = "110px"
     el.style.height = "110px"
@@ -339,6 +352,9 @@ function addResizeHandles(element) {
         handle.dataset.dir = pos
         element.appendChild(handle)
     })
+    const rot = document.createElement("div")
+    rot.className = "rotate-handle"
+    element.appendChild(rot)
 }
 
 function setupElementEvents(element) {
@@ -400,6 +416,19 @@ function setupElementEvents(element) {
         document.execCommand("insertText", false, text)
         adjustTextHeight(element)
     })
+
+    const rot = element.querySelector(".rotate-handle")
+    if (rot) {
+        rot.addEventListener("mousedown", function (e) {
+            e.stopPropagation()
+            startRotate(element, e)
+        })
+
+        rot.addEventListener("touchstart", function (e) {
+            e.stopPropagation()
+            startRotate(element, e.touches[0])
+        }, { passive: false })
+    }
 }
 
 function startDragging(element, e) {
@@ -407,7 +436,7 @@ function startDragging(element, e) {
 
     mouseX = e.clientX
     mouseY = e.clientY
-    itemX = parseInt(element.style.left)|| 0;
+    itemX = parseInt(element.style.left) || 0;
     itemY = parseInt(element.style.top) || 0;
 }
 
@@ -423,8 +452,60 @@ function startResizing(element, dir, e) {
     itemH = rect.height
 }
 
+function startRotate(element, e) {
+    rotating = true
+    selectedItem = element
+
+    const rect = element.getBoundingClientRect()
+    rotationCenterX = rect.left + rect.width / 2
+    rotationCenterY = rect.top + rect.height / 2
+
+    initialMouseX = e.clientX
+    initialMouseY = e.clientY
+    initialRotate = parseInt(element.dataset.rotate) || 0
+}
+
 document.addEventListener("mousemove", handleMove)
 document.addEventListener("touchmove", handleMove, { passive: false })
+
+
+document.addEventListener("mousemove", function(e) {
+    if (!rotating || !selectedItem) return
+
+    const dx = e.clientX - rotationCenterX
+    const dy = e.clientY - rotationCenterY
+
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI)
+    angle = Math.round(angle)
+
+    selectedItem.dataset.rotate = angle
+    selectedItem.style.transform = `rotate(${angle}deg)`
+
+    rotateInput.value = angle
+})
+
+document.addEventListener("touchmove", function(e){
+    if (!rotating || !selectedItem) return
+
+    const touch = e.touches[0]
+    const dx = touch.clientX - rotationCenterX
+    const dy = touch.clientY - rotationCenterY
+
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI)
+    angle = Math.round(angle)
+
+    selectedItem.dataset.rotate = angle
+    selectedItem.style.transform = `rotate(${angle}deg)`
+    rotateInput.value = angle
+}, { passive:false })
+
+document.addEventListener("touchend", function(){
+    rotating = false
+})
+
+document.addEventListener("mouseup", function(){
+    rotating = false
+})
 
 function handleMove(e) {
     if (!selectedItem) return
@@ -461,7 +542,7 @@ function handleMove(e) {
         if (newTop + itemHeight > ch) newTop = ch - itemHeight
 
         selectedItem.style.left = `${newLeft}px`;
-        selectedItem.style.top = `${newTop}px`;
+        selectedItem.style.top = `${newTop}px`
 
         updatePanel()
     }
@@ -542,8 +623,21 @@ document.addEventListener("touchend", function () {
 })
 
 function selectElement(element) {
+
+    console.log('selected type:', element.dataset.type);
+
+
     if (selectedItem) selectedItem.classList.remove("selected")
     selectedItem = element
+
+    if (element.dataset.rotate) {
+        element.style.transform = `rotate(${element.dataset.rotate}deg)`
+    }
+
+    if (!element.dataset.rotate) {
+        element.dataset.rotate = 0
+    }
+
     element.classList.add("selected")
     setTool("select")
     updatePanel()
@@ -609,6 +703,11 @@ function updatePanel() {
         textInput.value = rgbToHex(color)
         const fontSize = parseInt(selectedItem.style.fontSize) || 16
         fontInput.value = fontSize
+    }
+    if (selectedItem.dataset.rotate) {
+        rotateInput.value = selectedItem.dataset.rotate
+    } else {
+        rotateInput.value = 0
     }
 }
 
@@ -700,6 +799,13 @@ fontInput.onchange = function () {
     adjustTextHeight(selectedItem)
 }
 
+rotateInput.oninput = function () {
+    if (!selectedItem) return
+    let angle = parseInt(this.value) || 0
+    selectedItem.dataset.rotate = angle
+    selectedItem.style.transform = `rotate(${angle}deg)`
+}
+
 frontBtn.onclick = function () {
     if (!selectedItem) return
     selectedItem.style.zIndex = zIndex++
@@ -750,6 +856,139 @@ mobileClearBtn.onclick = function () {
 function updateCounter() {
     counter.textContent = items.length + " item" + (items.length !== 1 ? "s" : "")
 }
+function renderLayers() {
+    const panel = document.getElementById("layersPanel")
+    panel.innerHTML = ""
+
+    items
+        .slice()
+        .sort((a,b) => b.style.zIndex - a.style.zIndex)
+        .forEach((el, idx) => {
+            const div = document.createElement("div")
+            div.className = "layer-item" + (el === selectedItem ? " selected" : "")
+
+            div.textContent = `${el.dataset.type} ${idx+1}`
+            div.onclick = () => selectElement(el)
+
+            panel.appendChild(div)
+        })
+}
+
+
+
+function exportJSON() {
+    const data = {
+        items: items.map(el => ({
+            type: el.dataset.type,
+            x: parseInt(el.style.left),
+            y: parseInt(el.style.top),
+            w: el.offsetWidth,
+            h: el.offsetHeight,
+            rotate: parseInt(el.dataset.rotate),
+            z: parseInt(el.style.zIndex),
+            text: el.dataset.type === "text" ? el.textContent : null,
+            color: el.dataset.type === "text" ? el.style.color : null,
+            bg: el.dataset.type !== "text" ? el.style.backgroundColor : null,
+            font: el.dataset.type === "text" ? parseInt(el.style.fontSize) : null
+        }))
+    }
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "project.json"
+    a.click()
+}
+
+function importJSON(file) {
+    const reader = new FileReader()
+    reader.onload = function (e) {
+        const data = JSON.parse(e.target.result)
+
+        // clear old canvas
+        items.forEach(el => el.remove())
+        items = []
+        selectedItem = null
+
+        data.items.forEach(obj => {
+            let el = document.createElement("div")
+            el.dataset.type = obj.type
+            el.dataset.rotate = obj.rotate || 0
+            el.style.left = obj.x + "px"
+            el.style.top = obj.y + "px"
+            el.style.width = obj.w + "px"
+            el.style.height = obj.h + "px"
+            el.style.zIndex = obj.z || 1
+
+            if (obj.type === "text") {
+                el.className = "element text-element"
+                el.textContent = obj.text
+                el.style.color = obj.color
+                el.style.fontSize = obj.font + "px"
+                el.contentEditable = false
+            } else {
+                el.className = obj.type === "circle" ? "element circle-element" : "element box-element"
+                el.style.backgroundColor = obj.bg
+            }
+
+            if (obj.rotate) {
+                el.style.transform = `rotate(${obj.rotate}deg)`
+            }
+
+            addResizeHandles(el)
+            setupElementEvents(el)
+            canvas.appendChild(el)
+            items.push(el)
+        })
+
+        updateCounter()
+    }
+    reader.readAsText(file)
+}
+
+function autoSave() {
+    const saveData = items.map(el => ({
+        type: el.dataset.type,
+        x: parseInt(el.style.left),
+        y: parseInt(el.style.top),
+        w: el.offsetWidth,
+        h: el.offsetHeight,
+        rotate: el.dataset.rotate || 0,
+        z: el.style.zIndex,
+        bg: el.style.backgroundColor || null,
+        color: el.style.color || null,
+        font: el.style.fontSize || null,
+        text: el.dataset.type === "text" ? el.textContent : null
+    }));
+    localStorage.setItem("autosave", JSON.stringify(saveData));
+}
+
+const saved = JSON.parse(localStorage.getItem("autosave"))
+if (saved && saved.length > 0) importJSON(saved)
+
+
+
+document.getElementById("saveJSON").onclick = exportJSON
+
+document.getElementById("importFile").onchange = function (e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.readAsText(file)
+}
+autoSave()
+
+function clearCanvas(save = true) {
+    items.forEach(el => el.remove())
+    items = []
+    selectedItem = null
+    updateCounter()
+    hint.style.display = "block"
+    if (save) autoSave()
+}
+
+
 
 canvas.addEventListener("mousedown", function (e) {
     if (e.target === canvas && selectedItem) {
@@ -781,3 +1020,11 @@ window.addEventListener("resize", function () {
         updatePanel()
     }
 })
+
+document.getElementById("saveJSON").onclick = function () {
+    exportJSON()
+}
+
+document.getElementById("importFile").onchange = function (e) {
+    importJSON(e.target.files[0])
+}

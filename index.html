@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOM Design Tool</title>
+    <title>Figma</title>
+    <link rel="shortcut icon" href="logo.gif" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.8.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css">
@@ -37,7 +38,7 @@
                     <a href="https://github.com/prernasharma400225/Figma">
                         <i class="ri-github-fill"></i>
                     </a>
-                     
+
                 </div>
 
                 <div class="pro" id="pro" style="display: none; flex-direction: row; gap: 5px;">
@@ -47,10 +48,10 @@
                     </div>
                     <div id="profileText">
                         <h2 style="font-size: 10px;">User Name</h2>
-                    <p style="font-size: 7px;">User Profession</p>
+                        <p style="font-size: 7px;">User Profession</p>
                     </div>
                 </div>
-                
+
                 <button class="home-btn" id="homeBtn">
 
                     Login <i class="ri-arrow-down-s-line"></i>
@@ -105,8 +106,9 @@
                 </div>
                 <div class="item">
                     <h3>Layers</h3>
-                <div class="counter" id="counter">0 items</div>
+                    <div class="counter" id="counter">0 items</div>
                 </div>
+                <div id="layersPanel" class="layers-panel"></div>
             </div>
 
             <div class="canvas-container">
@@ -122,12 +124,26 @@
             <div class="panel">
                 <h3>Properties</h3>
 
+                <div class="property-group" style="margin-bottom:10px;">
+                    <div style="display:flex; gap:6px;">
+                        <button id="saveJSON" class="action-btn">Save JSON</button>
+                        <label for="importFile" class="action-btn">Load JSON</label>
+                    </div>
+                    <input type="file" id="importFile" accept="application/json" style="display:none;">
+                </div>
+
+
                 <div class="property-group">
                     <div class="property-label">Position</div>
                     <div class="row-inputs">
                         <input type="number" class="property-input" id="xInput" placeholder="X" disabled>
                         <input type="number" class="property-input" id="yInput" placeholder="Y" disabled>
                     </div>
+                </div>
+
+                <div class="property-group">
+                    <label class="property-label">Rotation(°)</label>
+                    <input id="rotateInput" type="number" class="property-input" value="0">
                 </div>
 
                 <div class="property-group">
