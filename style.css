@@ -2,7 +2,7 @@
     --white: rgb(230, 230, 230);
     --lgray: rgb(151, 151, 151);
     --dgray: rgb(31, 31, 31);
-    --black: black;
+    --black: rgb(8, 8, 8);
   }
 
   * {
@@ -86,12 +86,12 @@
 
   .header {
       height: 55px;
-      background: var(--dgray);
-      color: #fff;
+      background-color: var(--lgray);
+      color: var(--white);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 15px;
+      padding: 5px 15px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.132);
   }
 
@@ -103,6 +103,7 @@
 
   .header-left h1 {
       font-size: 1rem;
+      color: var(--dgray);
   }
 
   .logo {
@@ -115,6 +116,31 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+      border-radius: 3px;
+  }
+
+  .icon-theme{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icons{
+    display: flex;
+    gap: 10px;
+  }
+
+  .icons a{
+    text-decoration: none;
+    color: var(--dgray);
+   
+  }
+  .icons a i{
+    font-size: 20px;
+  }
+  .icons i{
+    color: var(--white);
+    font-size: 20px;
   }
 
   /* login */
@@ -162,7 +188,7 @@
   .login-save {
       margin-top: 10px;
       padding: 8px 12px;
-      background: #616162;
+      background-color: var(--lgray);
       color: var(--white);
       border-radius: 6px;
       cursor: pointer;
@@ -181,9 +207,9 @@
 
 
   .home-btn {
-      background: #444;
+      background-color: var(--dgray);
       border: none;
-      color: #fff;
+      color: var(--white);
       padding: 7px 14px;
       cursor: pointer;
       border-radius: 5px;
@@ -193,7 +219,7 @@
   }
 
   .home-btn:hover {
-      background: #555;
+      background-color: var(--dgray);
   }
 
   .main-area {
@@ -210,8 +236,8 @@
    
     display: flex;
     flex-direction: column;
-    color: rgb(224, 224, 224);
-    /* background-color: rgb(33, 33, 33); */
+    color: var(--black);
+    
    
 }
 
@@ -231,7 +257,7 @@
 }
 .left-sec p{
     font-size: 0.75rem;
-    color: rgb(167, 167, 167);
+    color: var(--dgray);
 }
 .left-sec p span{
     padding: 0.1rem 0.2rem;
@@ -256,12 +282,13 @@
 .l-third h2{
     font-size: 0.85rem;
     font-weight: 500;
-    background-color: rgb(63, 63, 63);
+    background-color: var(--dgray);
     padding: 0.1rem 0.25rem;
     border-radius: 0.25rem;
+    color: var(--white);
 }
 .l-third h3{
-    color: gray;
+    color: var(--lgray);
     font-weight: 500;
     font-size: 0.85rem;
 }
@@ -303,10 +330,10 @@
 
 
   .sidebar {
-      background: #2c2c2c;
+      background-color: var(--white);
     display: flex;
     flex-direction: row;
-       border-right: 1px solid rgb(97, 97, 97);
+       border-right: 1px solid rgb(206, 206, 206);
       gap: 12px;
       min-width: 25%;
   }
@@ -317,10 +344,10 @@
     justify-content: space-between;
   }
   .item h3{
-    color: var(--white);
+    color: var(--black);
   }
   .item .counter{
-    color: var(--lgray);
+    color: var(--dgray);
   }
 
   .tool-btn {
@@ -328,8 +355,8 @@
       height: 50px;
       border: none;
       border-radius: 8px;
-      background: #3a3a3a;
-      color: #fff;
+      background-color: var(--dgray);
+      color: var(--white);
       cursor: pointer;
       font-size: 11px;
       transition: all 0.2s;
@@ -340,12 +367,12 @@
   }
 
   .tool-btn:hover {
-      background: #4a4a4a;
+      background-color: var(--dgray);
   }
 
   .tool-btn.active {
-      background: #efefef;
-      color: #222;
+      background-color: var(--white);
+      color: var(--black);
   }
 
   .tool-icon {
@@ -356,7 +383,7 @@
   .canvas-container {
       flex: 1;
       padding: 15px;
-      background: #e0e0e0;
+      background-color: var(--white);
       overflow: hidden;
       order: 2;
   }
@@ -364,11 +391,11 @@
   .canvas {
       width: 100%;
       height: 100%;
-      background: #fff;
+      background-color: var(--white);
       border-radius: 8px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: inset 0 0 10px var(--dgray);
   }
 
   .hint {
@@ -376,7 +403,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #aaa;
+      color: var(--dgray);
       text-align: center;
       font-size: 15px;
       padding: 0 15px;
@@ -387,13 +414,13 @@
       font-size: 45px;
       margin-bottom: 10px;
       display: block;
-      color: #ccc;
+      color: var(--dgray);
   }
 
   .panel {
       background: var(--white);
       padding: 15px;
-      border-top: 1px solid var(--);
+      border-top: 1px solid var(--lgray);
       order: 3;
       height: 100%;
     width: 25%;
@@ -403,9 +430,9 @@
   .panel h3 {
       margin-bottom: 15px;
       font-size: 18px;
-      color: #222;
+      color: var(--black);
       padding-bottom: 8px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--white);
   }
 
   .property-group {
@@ -416,21 +443,22 @@
       font-size: 13px;
       display: block;
       margin-bottom: 6px;
-      color: #444;
+      color: var(--dgray);
       font-weight: 500;
   }
 
   .property-input {
       width: 100%;
       padding: 9px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--lgray);
       border-radius: 5px;
       font-size: 13px;
-      background: #fff;
+      background-color: var(--white);
+      color: var(--dgray);
   }
 
   .property-input:disabled {
-      background: #f5f5f5;
+      background: var(--white);
       cursor: not-allowed;
   }
 
@@ -456,7 +484,7 @@
 
   .delete-btn {
       background: #ff4444;
-      color: #fff;
+      color: var(--white);
       margin-top: 10px;
   }
 
@@ -465,31 +493,31 @@
   }
 
   .delete-btn:disabled {
-      background: #ffaaaa;
+      background: var(--lgray);
       cursor: not-allowed;
   }
 
   .clear-btn {
-      background: #ff8800;
-      color: #fff;
+      background: var(--dgray);
+      color: var(--white);
   }
 
   .clear-btn:hover {
-      background: #ee7700;
+      background: var(--dgray);
   }
 
   .layer-btn {
-      background: #f0f0f0;
-      color: #222;
+      background: var(--white);
+      color: var(--black);
   }
 
   .layer-btn:hover {
-      background: #e0e0e0;
+      background: var(--white);
   }
 
   .layer-btn:disabled {
-      background: #f5f5f5;
-      color: #aaa;
+      background: var(--white);
+      color: var(--lgray);
       cursor: not-allowed;
   }
 
@@ -506,15 +534,15 @@
 
   .element.selected {
       border-color: #2196f3;
-      box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+      box-shadow: 0 0 10px var(--dgray);
   }
 
   .text-element {
       padding: 10px;
       font-size: 15px;
-      color: #222;
-      background: #fff;
-      border: 1px solid #ddd;
+      color: var(--black);
+      background: var(--white);
+      border: 1px solid var(--white);
       resize: none;
       overflow-wrap: break-word;
       word-break: break-word;
@@ -525,11 +553,11 @@
   }
 
   .box-element {
-      background: #4fc3f7;
+      background: var(--dgray);
   }
 
   .circle-element {
-      background: #ab47bc;
+      background: var(--lgray);
       border-radius: 50%;
   }
 
@@ -575,7 +603,7 @@
 
   .mobile-controls {
       display: none;
-      background: #f0f0f0;
+      background: var(--white);
       padding: 10px;
       justify-content: space-between;
       gap: 10px;
@@ -587,7 +615,7 @@
       border: none;
       border-radius: 5px;
       background: #2196f3;
-      color: white;
+      color: var(--white);
       font-size: 14px;
       cursor: pointer;
   }
@@ -619,7 +647,7 @@
 
       .panel {
           width: 300px;
-          border-left: 1px solid #ccc;
+          border-left: 1px solid var(--lgray);
           border-top: none;
           max-height: none;
           overflow-y: auto;

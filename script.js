@@ -16,9 +16,9 @@ let isTouch = false
 
 const landingPage = document.getElementById("landingPage")
 const toolPage = document.getElementById("toolPage")
-const startBtn = document.getElementById("start")
 const homeBtn = document.getElementById("homeBtn")
-const login = document.getElementById("loginOverlay")
+
+const startBtn = document.getElementById("start")
 const canvas = document.getElementById("canvas")
 const hint = document.getElementById("hint")
 const counter = document.getElementById("counter")
@@ -45,6 +45,122 @@ const mobileBackBtn = document.getElementById("mobileBackBtn")
 const mobileDeleteBtn = document.getElementById("mobileDeleteBtn")
 const mobileClearBtn = document.getElementById("mobileClearBtn")
 
+// login
+
+
+
+const login = document.getElementById("loginOverlay")
+const profileContainer = document.getElementById("pro")
+const profileImg = document.querySelector("#profileImg img")
+const profileName = document.querySelector("#proflieText h2")
+const profileJob = document.querySelector("#proflieText p")
+
+const loginSave = document.getElementById("loginSave")
+const loginClose = document.getElementById("loginClose")
+
+profileContainer.style.display = "none"
+
+function loadProfile() {
+    const saved = JSON.parse(localStorage.getItem("profile"));
+    if (saved) {
+        profileName.textContent = saved.name;
+        profileJob.textContent = saved.job;
+        profileImg.src = saved.img;
+
+        profileContainer.style.display = "flex";
+    }
+}
+loadProfile();
+
+homeBtn.addEventListener("click", () => {
+    const saved = JSON.parse(localStorage.getItem("profile"));
+    if (saved) {
+        document.getElementById("userName").value = saved.name;
+        document.getElementById("userJob").value = saved.job;
+        document.getElementById("userImg").value = "";
+    }
+    loginOverlay.classList.add("show");
+});
+
+// CLOSE LOGIN
+loginClose.addEventListener("click", () => {
+    loginOverlay.classList.remove("show")
+})
+
+loginSave.addEventListener("click", () => {
+    const name = document.getElementById("userName").value.trim()
+    const job = document.getElementById("userJob").value.trim()
+    const file = document.getElementById("userImg").files[0]
+
+    if (!name || !job) {
+        alert("Please enter name & profession");
+        return
+    }
+
+    let saved = JSON.parse(localStorage.getItem("profile"));
+    let imgURL = saved?.img || profileImg.src;
+
+    if (file) {
+        imgURL = URL.createObjectURL(file);
+    }
+
+    profileName.textContent = name;
+    profileJob.textContent = job;
+    profileImg.src = imgURL;
+
+
+    profileContainer.style.display = "flex";
+    loginOverlay.classList.remove("show");
+
+    localStorage.setItem("profile", JSON.stringify({
+        name, job, img: imgURL
+    }));
+
+})
+profileContainer.addEventListener("click", () => {
+    const saved = JSON.parse(localStorage.getItem("profile"));
+    if (saved) {
+        document.getElementById("userName").value = saved.name;
+        document.getElementById("userJob").value = saved.job;
+        document.getElementById("userImg").value = "";
+    }
+    loginOverlay.classList.add("show");
+});
+
+
+
+
+
+function themes() {
+    const theme = document.querySelector("#icon i:first-child")
+    const rootElement = document.documentElement
+
+    let flag = 0
+
+    theme.addEventListener('click', function () {
+        if (flag === 0) {
+            rootElement.style.setProperty('--white', 'rgb(230, 230, 230)')
+            rootElement.style.setProperty('--lgray', 'rgb(151, 151, 151)')
+            rootElement.style.setProperty('--dgray', 'rgb(31, 31, 31)')
+            rootElement.style.setProperty('--black', 'rgb(8, 8, 8)')
+
+            theme.classList = 'ri-sun-line'
+            flag = 1
+
+        } else {
+            rootElement.style.setProperty('--white', 'rgb(8, 8, 8)')
+            rootElement.style.setProperty('--lgray', 'rgb(31, 31, 31)')
+            rootElement.style.setProperty('--dgray', 'rgb(151, 151, 151)')
+            rootElement.style.setProperty('--black', 'rgb(230, 230, 230)')
+
+            theme.classList = 'ri-moon-fill'
+            flag = 0
+        }
+    })
+}
+window.addEventListener('DOMContentLoaded', themes)
+
+
 
 
 window.onload = () => {
@@ -55,7 +171,7 @@ window.onload = () => {
             landingPage.style.display = 'none';
             toolPage.classList.add("show");
         }, 600);
-    }, 7000);
+    }, 6000);
 }
 
 
