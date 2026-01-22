@@ -58,16 +58,117 @@ const mobileClearBtn = document.getElementById("mobileClearBtn")
 
 
 
-const login = document.getElementById("loginOverlay")
-const profileContainer = document.getElementById("pro")
-const profileImg = document.querySelector("#profileImg img")
-const profileName = document.querySelector("#proflieText h2")
-const profileJob = document.querySelector("#proflieText p")
+// ===== LOGIN FIXED =====
 
-const loginSave = document.getElementById("loginSave")
-const loginClose = document.getElementById("loginClose")
+// ================= LOGIN SYSTEM (FINAL) =================
 
-profileContainer.style.display = "none"
+const loginOverlay = document.getElementById("loginOverlay");
+const loginSave = document.getElementById("loginSave");
+const loginClose = document.getElementById("loginClose");
+const profileContainer = document.getElementById("pro");
+const profileName = document.getElementById("profileName");
+const profileJob = document.getElementById("profileJob");
+const profilePic = document.getElementById("profilePic");
+const userImg = document.getElementById("userImg");
+const userName = document.getElementById("userName");
+const userJob = document.getElementById("userJob");
+
+// LOAD PROFILE
+function loadProfile(){
+    const saved = JSON.parse(localStorage.getItem("profile"));
+    if(!saved){
+        profileContainer.style.display = "none";
+        return;
+    }
+    profileName.textContent = saved.name;
+    profileJob.textContent = saved.job;
+    profilePic.src = saved.img;
+    profileContainer.style.display = "flex";
+}
+loadProfile();
+
+// SAVE PROFILE
+loginSave.addEventListener("click",()=>{
+    const name = userName.value.trim();
+    const job = userJob.value.trim();
+    const file = userImg.files[0];
+
+    if(!name || !job){
+        alert("Please enter name & profession");
+        return;
+    }
+
+    let img = profilePic.src;
+    if(file){
+        const reader = new FileReader();
+        reader.onload = (e)=>{
+            img = e.target.result;
+            finalizeProfile(name, job, img);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        finalizeProfile(name, job, img);
+    }
+});
+
+function finalizeProfile(name,job,img){
+    localStorage.setItem("profile",JSON.stringify({name,job,img}));
+    profileName.textContent = name;
+    profileJob.textContent = job;
+    profilePic.src = img;
+    profileContainer.style.display = "flex";
+    loginOverlay.classList.remove("show");
+}
+
+// PROFILE CLICK → EDIT
+profileContainer.addEventListener("click",()=>{
+    const saved = JSON.parse(localStorage.getItem("profile"));
+    if(saved){
+        userName.value = saved.name;
+        userJob.value = saved.job;
+    }
+    userImg.value = "";
+    loginOverlay.classList.add("show");
+});
+
+// HOME BUTTON → OPEN LOGIN
+homeBtn.addEventListener("click",()=>{
+    loginOverlay.classList.add("show");
+});
+document.querySelector(".login-box").addEventListener("click", (e) => {
+    e.stopPropagation();
+});
+
+
+loginOverlay.addEventListener("click", (e) => {
+    if (e.target === loginOverlay) {
+        loginOverlay.classList.remove("show");
+    }
+});
+
+
+
+
+
+
+// Load saved data on start
+window.addEventListener("load", () => {
+    const savedName = localStorage.getItem("userName");
+    const savedJob = localStorage.getItem("userJob");
+    const savedImg = localStorage.getItem("userImage");
+
+    if (savedName) profileName.textContent = savedName;
+    if (savedJob) profileJob.textContent = savedJob;
+    if (savedImg) profilePic.src = savedImg;
+
+    // if any data present -> show profile
+    if (savedName || savedJob || savedImg) {
+        pro.style.display = "flex";
+        loginOverlay.style.display = "none";
+    }
+});
+
+
 
 function loadProfile() {
     const saved = JSON.parse(localStorage.getItem("profile"));
@@ -194,7 +295,7 @@ homeBtn.onclick = function () {
 }
 // login
 homeBtn.onclick = () => loginOverlay.classList.add("show");
-login.onclick = () => loginOverlay.classList.remove("show");
+loginOverlay.onclick = () => loginOverlay.classList.remove("show");
 
 function setTool(t) {
     tool = t
