@@ -469,7 +469,7 @@ document.addEventListener("mousemove", handleMove)
 document.addEventListener("touchmove", handleMove, { passive: false })
 
 
-document.addEventListener("mousemove", function(e) {
+document.addEventListener("mousemove", function (e) {
     if (!rotating || !selectedItem) return
 
     const dx = e.clientX - rotationCenterX
@@ -484,7 +484,7 @@ document.addEventListener("mousemove", function(e) {
     rotateInput.value = angle
 })
 
-document.addEventListener("touchmove", function(e){
+document.addEventListener("touchmove", function (e) {
     if (!rotating || !selectedItem) return
 
     const touch = e.touches[0]
@@ -497,13 +497,13 @@ document.addEventListener("touchmove", function(e){
     selectedItem.dataset.rotate = angle
     selectedItem.style.transform = `rotate(${angle}deg)`
     rotateInput.value = angle
-}, { passive:false })
+}, { passive: false })
 
-document.addEventListener("touchend", function(){
+document.addEventListener("touchend", function () {
     rotating = false
 })
 
-document.addEventListener("mouseup", function(){
+document.addEventListener("mouseup", function () {
     rotating = false
 })
 
@@ -816,14 +816,13 @@ backBtn.onclick = function () {
     selectedItem.style.zIndex = 1
 }
 
-deleteBtn.onclick = function () {
-    if (!selectedItem) return
+deleteBtn.onclick = () => {
+    if (!selectedItem) return items = items.filter(i => i !== selectedItem)
     selectedItem.remove()
-    items = items.filter(function (item) { return item !== selectedItem })
     selectedItem = null
     updateCounter()
-    updatePanel()
-    if (items.length === 0) hint.style.display = "block"
+    renderLayers()
+    autoSave()
 }
 
 clearBtn.onclick = function () {
@@ -859,19 +858,13 @@ function updateCounter() {
 function renderLayers() {
     const panel = document.getElementById("layersPanel")
     panel.innerHTML = ""
-
-    items
-        .slice()
-        .sort((a,b) => b.style.zIndex - a.style.zIndex)
-        .forEach((el, idx) => {
-            const div = document.createElement("div")
-            div.className = "layer-item" + (el === selectedItem ? " selected" : "")
-
-            div.textContent = `${el.dataset.type} ${idx+1}`
-            div.onclick = () => selectElement(el)
-
-            panel.appendChild(div)
-        })
+    items.slice().sort((a, b) => b.style.zIndex - a.style.zIndex).forEach((el, i) => {
+        let div = document.createElement("div")
+        div.className = "layer-item" + (el === selectedItem ? " selected" : "")
+        div.textContent = `${el.dataset.type} ${i + 1}`
+        div.onclick = () => selectElement(el)
+        panel.appendChild(div)
+    })
 }
 
 
@@ -882,18 +875,19 @@ function exportJSON() {
             type: el.dataset.type,
             x: parseInt(el.style.left),
             y: parseInt(el.style.top),
-            w: el.offsetWidth,
-            h: el.offsetHeight,
+            w: el.offsetWidth, h: el.offsetHeight,
             rotate: parseInt(el.dataset.rotate),
             z: parseInt(el.style.zIndex),
             text: el.dataset.type === "text" ? el.textContent : null,
-            color: el.dataset.type === "text" ? el.style.color : null,
-            bg: el.dataset.type !== "text" ? el.style.backgroundColor : null,
-            font: el.dataset.type === "text" ? parseInt(el.style.fontSize) : null
+            color: el.style.color,
+            bg: el.style.backgroundColor,
+            font: el.style.fontSize
         }))
     }
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
+    const blob = new Blob([JSON.stringify(data, null, 2)],
+        {
+            type: "application/json"
+        })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -903,69 +897,75 @@ function exportJSON() {
 
 function importJSON(file) {
     const reader = new FileReader()
-    reader.onload = function (e) {
+    reader.onload = e => {
         const data = JSON.parse(e.target.result)
-
-        // clear old canvas
         items.forEach(el => el.remove())
         items = []
         selectedItem = null
-
         data.items.forEach(obj => {
             let el = document.createElement("div")
             el.dataset.type = obj.type
-            el.dataset.rotate = obj.rotate || 0
+            el.dataset.rotate = obj.rotate
             el.style.left = obj.x + "px"
             el.style.top = obj.y + "px"
             el.style.width = obj.w + "px"
             el.style.height = obj.h + "px"
-            el.style.zIndex = obj.z || 1
-
+            el.style.zIndex = obj.z
             if (obj.type === "text") {
                 el.className = "element text-element"
                 el.textContent = obj.text
                 el.style.color = obj.color
-                el.style.fontSize = obj.font + "px"
-                el.contentEditable = false
+                el.style.fontSize = obj.font
             } else {
                 el.className = obj.type === "circle" ? "element circle-element" : "element box-element"
                 el.style.backgroundColor = obj.bg
             }
-
-            if (obj.rotate) {
-                el.style.transform = `rotate(${obj.rotate}deg)`
-            }
-
-            addResizeHandles(el)
-            setupElementEvents(el)
+            el.style.transform = `rotate(${obj.rotate}deg)`
+            addHandles(el)
+            setupEvents(el)
             canvas.appendChild(el)
             items.push(el)
         })
         renderLayers()
         updateCounter()
+        autoSave()
     }
     reader.readAsText(file)
 }
 
 function autoSave() {
-    const saveData = items.map(el => ({
-        type: el.dataset.type,
-        x: parseInt(el.style.left),
-        y: parseInt(el.style.top),
-        w: el.offsetWidth,
-        h: el.offsetHeight,
-        rotate: el.dataset.rotate || 0,
-        z: el.style.zIndex,
-        bg: el.style.backgroundColor || null,
-        color: el.style.color || null,
-        font: el.style.fontSize || null,
-        text: el.dataset.type === "text" ? el.textContent : null
-    }));
-    localStorage.setItem("autosave", JSON.stringify(saveData));
+    localStorage.setItem("autosave", JSON.stringify(items.map(el => ({ type: el.dataset.type, x: parseInt(el.style.left), y: parseInt(el.style.top), w: el.offsetWidth, h: el.offsetHeight, rotate: el.dataset.rotate, z: el.style.zIndex, bg: el.style.backgroundColor, color: el.style.color, font: el.style.fontSize, text: el.dataset.type === "text" ? el.textContent : null }))))
 }
 
 const saved = JSON.parse(localStorage.getItem("autosave"))
-if (saved && saved.length > 0) importJSON(saved)
+if (saved) {
+    saved.forEach(obj => {
+        let el = document.createElement("div")
+        el.dataset.type = obj.type
+        el.dataset.rotate = obj.rotate
+        el.style.left = obj.x + "px"
+        el.style.top = obj.y + "px"
+        el.style.width = obj.w + "px"
+        el.style.height = obj.h + "px"
+        el.style.zIndex = obj.z
+        if (obj.type === "text") {
+            el.className = "element text-element"
+            el.textContent = obj.text
+            el.style.color = obj.color
+            el.style.fontSize = obj.font
+        } else {
+            el.className = obj.type === "circle" ? "element circle-element" : "element box-element"
+            el.style.backgroundColor = obj.bg
+        }
+        el.style.transform = `rotate(${obj.rotate}deg)`
+        addHandles(el)
+        setupEvents(el)
+        canvas.appendChild(el)
+        items.push(el)
+    })
+    renderLayers()
+    updateCounter()
+}
 
 
 
@@ -1036,8 +1036,8 @@ exportHTMLBtn.onclick = function () {
     exportHTML()
 }
 
-function exportHTML(){
-    let html = items.map(el=>{
+function exportHTML() {
+    let html = items.map(el => {
         return `<div style="
             position:absolute;
             left:${el.style.left};
@@ -1049,10 +1049,10 @@ function exportHTML(){
             background:${el.style.backgroundColor || "transparent"};
             color:${el.style.color || "black"};
             font-size:${el.style.fontSize || "16px"};
-        ">${el.dataset.type==="text" ? el.textContent : ""}</div>`
+        ">${el.dataset.type === "text" ? el.textContent : ""}</div>`
     }).join("\n")
 
-    const blob = new Blob([html],{type:"text/html"})
+    const blob = new Blob([html], { type: "text/html" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -1060,11 +1060,11 @@ function exportHTML(){
     a.click()
 }
 
-document.addEventListener("keydown", function(e){
-    if(!selectedItem) return
+document.addEventListener("keydown", function (e) {
+    if (!selectedItem) return
 
     // DELETE
-    if(e.key === "Delete" || e.key === "Backspace"){
+    if (e.key === "Delete" || e.key === "Backspace") {
         selectedItem.remove()
         items = items.filter(it => it !== selectedItem)
         selectedItem = null
@@ -1077,16 +1077,16 @@ document.addEventListener("keydown", function(e){
     let left = parseInt(selectedItem.style.left) || 0
     let top = parseInt(selectedItem.style.top) || 0
 
-    if(e.key === "ArrowUp") top -= step
-    if(e.key === "ArrowDown") top += step
-    if(e.key === "ArrowLeft") left -= step
-    if(e.key === "ArrowRight") left += step
+    if (e.key === "ArrowUp") top -= step
+    if (e.key === "ArrowDown") top += step
+    if (e.key === "ArrowLeft") left -= step
+    if (e.key === "ArrowRight") left += step
 
-    if(left < 0) left = 0
-    if(top < 0) top = 0
-    if(left + selectedItem.offsetWidth > canvas.offsetWidth)
+    if (left < 0) left = 0
+    if (top < 0) top = 0
+    if (left + selectedItem.offsetWidth > canvas.offsetWidth)
         left = canvas.offsetWidth - selectedItem.offsetWidth
-    if(top + selectedItem.offsetHeight > canvas.offsetHeight)
+    if (top + selectedItem.offsetHeight > canvas.offsetHeight)
         top = canvas.offsetHeight - selectedItem.offsetHeight
 
     selectedItem.style.left = left + "px"
@@ -1095,8 +1095,8 @@ document.addEventListener("keydown", function(e){
 })
 
 
-function saveLayout(){
-    const data = items.map(el=>({
+function saveLayout() {
+    const data = items.map(el => ({
         type: el.dataset.type,
         x: parseInt(el.style.left),
         y: parseInt(el.style.top),
@@ -1104,7 +1104,7 @@ function saveLayout(){
         h: el.offsetHeight,
         rotate: el.dataset.rotate || 0,
         z: el.style.zIndex,
-        text: el.dataset.type==="text" ? el.textContent : null,
+        text: el.dataset.type === "text" ? el.textContent : null,
         bg: el.style.backgroundColor,
         color: el.style.color,
         font: el.style.fontSize
@@ -1114,28 +1114,28 @@ function saveLayout(){
 
 
 
-function loadLayout(){
+function loadLayout() {
     const data = JSON.parse(localStorage.getItem("layout"))
-    if(!data) return
+    if (!data) return
 
     items = []
-    data.forEach(obj=>{
+    data.forEach(obj => {
         let el = document.createElement("div")
         el.dataset.type = obj.type
         el.dataset.rotate = obj.rotate
-        el.style.left = obj.x+"px"
-        el.style.top = obj.y+"px"
-        el.style.width = obj.w+"px"
-        el.style.height = obj.h+"px"
+        el.style.left = obj.x + "px"
+        el.style.top = obj.y + "px"
+        el.style.width = obj.w + "px"
+        el.style.height = obj.h + "px"
         el.style.zIndex = obj.z
 
-        if(obj.type === "text"){
+        if (obj.type === "text") {
             el.className = "element text-element"
             el.textContent = obj.text
             el.style.color = obj.color
             el.style.fontSize = obj.font
         } else {
-            el.className = (obj.type==="circle" ? "element circle-element" : "element box-element")
+            el.className = (obj.type === "circle" ? "element circle-element" : "element box-element")
             el.style.backgroundColor = obj.bg
         }
 
