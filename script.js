@@ -941,7 +941,7 @@ function importJSON(file) {
             canvas.appendChild(el)
             items.push(el)
         })
-
+        renderLayers()
         updateCounter()
     }
     reader.readAsText(file)
@@ -1028,3 +1028,127 @@ document.getElementById("saveJSON").onclick = function () {
 document.getElementById("importFile").onchange = function (e) {
     importJSON(e.target.files[0])
 }
+
+
+exportHTMLBtn = document.getElementById("exportHTML")
+
+exportHTMLBtn.onclick = function () {
+    exportHTML()
+}
+
+function exportHTML(){
+    let html = items.map(el=>{
+        return `<div style="
+            position:absolute;
+            left:${el.style.left};
+            top:${el.style.top};
+            width:${el.style.width};
+            height:${el.style.height};
+            z-index:${el.style.zIndex};
+            transform:rotate(${el.dataset.rotate}deg);
+            background:${el.style.backgroundColor || "transparent"};
+            color:${el.style.color || "black"};
+            font-size:${el.style.fontSize || "16px"};
+        ">${el.dataset.type==="text" ? el.textContent : ""}</div>`
+    }).join("\n")
+
+    const blob = new Blob([html],{type:"text/html"})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "design.html"
+    a.click()
+}
+
+document.addEventListener("keydown", function(e){
+    if(!selectedItem) return
+
+    // DELETE
+    if(e.key === "Delete" || e.key === "Backspace"){
+        selectedItem.remove()
+        items = items.filter(it => it !== selectedItem)
+        selectedItem = null
+        updateCounter()
+        updatePanel()
+        return
+    }
+
+    const step = 5
+    let left = parseInt(selectedItem.style.left) || 0
+    let top = parseInt(selectedItem.style.top) || 0
+
+    if(e.key === "ArrowUp") top -= step
+    if(e.key === "ArrowDown") top += step
+    if(e.key === "ArrowLeft") left -= step
+    if(e.key === "ArrowRight") left += step
+
+    if(left < 0) left = 0
+    if(top < 0) top = 0
+    if(left + selectedItem.offsetWidth > canvas.offsetWidth)
+        left = canvas.offsetWidth - selectedItem.offsetWidth
+    if(top + selectedItem.offsetHeight > canvas.offsetHeight)
+        top = canvas.offsetHeight - selectedItem.offsetHeight
+
+    selectedItem.style.left = left + "px"
+    selectedItem.style.top = top + "px"
+    updatePanel()
+})
+
+
+function saveLayout(){
+    const data = items.map(el=>({
+        type: el.dataset.type,
+        x: parseInt(el.style.left),
+        y: parseInt(el.style.top),
+        w: el.offsetWidth,
+        h: el.offsetHeight,
+        rotate: el.dataset.rotate || 0,
+        z: el.style.zIndex,
+        text: el.dataset.type==="text" ? el.textContent : null,
+        bg: el.style.backgroundColor,
+        color: el.style.color,
+        font: el.style.fontSize
+    }))
+    localStorage.setItem("layout", JSON.stringify(data))
+}
+
+
+
+function loadLayout(){
+    const data = JSON.parse(localStorage.getItem("layout"))
+    if(!data) return
+
+    items = []
+    data.forEach(obj=>{
+        let el = document.createElement("div")
+        el.dataset.type = obj.type
+        el.dataset.rotate = obj.rotate
+        el.style.left = obj.x+"px"
+        el.style.top = obj.y+"px"
+        el.style.width = obj.w+"px"
+        el.style.height = obj.h+"px"
+        el.style.zIndex = obj.z
+
+        if(obj.type === "text"){
+            el.className = "element text-element"
+            el.textContent = obj.text
+            el.style.color = obj.color
+            el.style.fontSize = obj.font
+        } else {
+            el.className = (obj.type==="circle" ? "element circle-element" : "element box-element")
+            el.style.backgroundColor = obj.bg
+        }
+
+        addResizeHandles(el)
+        setupElementEvents(el)
+        canvas.appendChild(el)
+        items.push(el)
+    })
+
+    updateCounter()
+}
+
+loadLayout()
+
+
+
