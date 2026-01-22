@@ -404,11 +404,11 @@ function setupElementEvents(element) {
 
 function startDragging(element, e) {
     dragging = true
-    const rect = element.getBoundingClientRect()
+
     mouseX = e.clientX
     mouseY = e.clientY
-    itemX = rect.left
-    itemY = rect.top
+    itemX = parseInt(element.style.left)|| 0;
+    itemY = parseInt(element.style.top) || 0;
 }
 
 function startResizing(element, dir, e) {
@@ -452,13 +452,16 @@ function handleMove(e) {
         const itemWidth = selectedItem.offsetWidth
         const itemHeight = selectedItem.offsetHeight
 
+        const cw = canvas.offsetWidth;
+        const ch = canvas.offsetHeight
+
         if (newLeft < 0) newLeft = 0
         if (newTop < 0) newTop = 0
-        if (newLeft + itemWidth > canvasWidth) newLeft = canvasWidth - itemWidth
-        if (newTop + itemHeight > canvasHeight) newTop = canvasHeight - itemHeight
+        if (newLeft + itemWidth > cw) newLeft = cw - itemWidth
+        if (newTop + itemHeight > ch) newTop = ch - itemHeight
 
-        selectedItem.style.left = newLeft + "px"
-        selectedItem.style.top = newTop + "px"
+        selectedItem.style.left = `${newLeft}px`;
+        selectedItem.style.top = `${newTop}px`;
 
         updatePanel()
     }
