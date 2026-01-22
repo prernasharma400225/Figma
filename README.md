@@ -1,127 +1,143 @@
-# 🎨 Figma-Style Design Tool (DOM Based)
+# Figma-Style Browser Design Tool
 
-A browser-based design/editor tool inspired by Figma, where users can draw rectangles, add text elements, move/resize objects, manage layers, and style components — all built **without Canvas**, using **pure HTML, CSS, and Vanilla JavaScript**.
-
----
-
-## ✨ Key Features
-
-- 🟦 Create rectangles, text boxes, and basic shapes
-- 🔁 Move, resize, scale, and align elements
-- 🎯 Click-to-select & drag interaction
-- 📐 Layering & z-index ordering (Figma-style)
-- 🎨 Basic styling: background colors, dimensions, text content
-- 💾 Save & load element state (optional)
-- ⚙ Built entirely using **DOM elements** (no <canvas>)
-- 🧩 100% **Vanilla HTML + CSS + JS** (no frameworks)
-- 🖥 Works in the browser — no installation required
+This project is a simple and lightweight **Figma-style design tool** created using only **HTML, CSS, and JavaScript**. The tool supports shapes, text, rotation, resizing, and positioning, making it useful for **UI prototyping, wireframing, mockups, and visual layouts** without requiring external frameworks or libraries.
 
 ---
 
-## 🧱 Tech Stack
+## 🚀 Features
 
-- **HTML** — UI layout & DOM elements
-- **CSS** — Styling, grids, panels, selection
-- **JavaScript (Vanilla)** — Interaction logic, selection, dragging, resizing, state
-- **Local Storage (optional)** — Save/restore sessions
-
----
-
-## 🗂 Project Structure
-
-```
-/src
-  |— index.html
-  |— style.css
-  |— app.js
-  |— /components
-       |— selection.js
-       |— layers.js
-       |— state.js
-       |— properties.js
-```
+✔ Add Shapes  
+✔ Add Text Blocks (Editable)  
+✔ Drag & Move Elements  
+✔ Resize via Handles  
+✔ Rotate Elements  
+✔ Layer Positioning (Front / Back)  
+✔ Auto Layout Counter  
+✔ LocalStorage Autosave  
+✔ Export & Import Project (JSON & HTML)  
+✔ Clean UI Inspired by Figma  
 
 ---
 
-## 🧰 Core Concepts
+## 🎨 Theme System
 
-This editor intentionally avoids `<canvas>` and instead:
+The tool includes a built-in **Dark/Light theme toggle**:
 
-✔ Represents elements as real DOM nodes (divs, spans, etc.)  
-✔ Uses CSS for positioning & resizing  
-✔ Listens to pointer/mouse events for interaction  
-✔ Maintains state for selection + layers  
+- Dark Mode (default)
+- Light Mode
 
----
-
-## 🚀 Getting Started
-
-Clone the repo:
-
-```bash
-git clone https://github.com/yourUsername/yourRepo.git
-cd yourRepo
-```
-
-Open the project:
-
-```bash
-open index.html
-```
-
-Or just drag it into a browser.
+Theme styling is controlled using **CSS variables + JavaScript** for instant UI switching.
 
 ---
 
-## 🎮 Usage
+## 🔐 Login / Profile System
 
-1. Click the **Rectangle** or **Text** tool  
-2. Click on the workspace to create an element  
-3. Select & drag to move  
-4. Use anchors to resize  
-5. Adjust properties in sidebar (width, height, text, colors)  
-6. Manage layers from the sidebar  
-7. Save your design (optional)
+Users can personalize the workspace via a simple profile overlay:
 
----
+✔ Profile Image Upload  
+✔ Name & Profession Fields  
+✔ Profile Preview on Canvas Header  
+✔ LocalStorage Persistence  
+✔ Profile Click = Edit Profile  
 
-## 🖼 Screenshot (Optional)
-
-> Add screenshots to make it visually clear
-
-Example:
-
-| Workspace | Layers |
-|----------|--------|
-| ![workspace](link_here) | ![layers](link_here) |
+Perfect for giving the tool a personalized UX like modern editors.
 
 ---
 
-## 🔮 Future Enhancements (Ideas)
 
-- 🔹 Export to JSON & re-import
-- 🔹 Snap-to-grid & alignment guides
-- 🔹 Multi-select
-- 🔹 Undo/redo
-- 🔹 Text styling panel
-- 🔹 Custom shapes
-- 🔹 Export as PNG using html2canvas
+
+
+No frameworks  
+No bundlers  
+No dependencies  
 
 ---
 
-## 🧑‍💻 Author
+## 💾 Local Storage Usage
 
-**Your Name**  
-GitHub: https://github.com/yourUsername  
+The tool uses browser **localStorage** for:
+
+- Autosave Canvas
+- Login Profile Data
+- Theme Preferences
+
+This ensures data stays even after page reload.
 
 ---
 
-## 📬 Contributions
+## 🌐 GitHub Deployment
 
-Pull requests & feature suggestions are welcome!
+This project can be easily hosted using **GitHub Pages**:
+
+1. Push repo to GitHub
+2. Go to: Settings → Pages
+3. Set branch to `main` or `master`
+4. Live instantly
 
 ---
 
-## 📝 License
+## 📸 Screenshots (Optional)
 
-MIT License — free to use & modify.
+> Add your screenshots here
+
+
+---
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| UI | HTML + CSS |
+| Logic | Vanilla JavaScript |
+| Storage | LocalStorage |
+| Export | JSON / HTML |
+| Theme | CSS Variables |
+| Profile | FileReader API |
+
+---
+
+## 📦 Future Enhancements (Optional)
+
+- Group Selection Elements
+- Undo / Redo System
+- Multiple Page Projects
+- Export to PNG / SVG
+- Collaboration Mode
+- Snap to Grid
+- React / Vue Version
+
+---
+
+## 🎯 Purpose
+
+This tool is designed for:
+
+✔ Students  
+✔ Designers  
+✔ UI/UX Learners  
+✔ Frontend Practice  
+✔ Demonstrating Browser APIs  
+✔ Portfolio Projects  
+
+---
+
+## 🧑‍💻 Developer Notes
+
+Built as a **pure frontend project** with zero backend — ideal for GitHub / Portfolio showcasing.
+
+---
+
+## 📄 License (Optional)
+
+MIT License or custom license can be added based on repo need.
+
+---
+
+## ⭐ Credits
+
+Built with ❤️ using:
+- HTML
+- CSS
+- JavaScript
+
+
